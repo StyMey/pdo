@@ -21,14 +21,24 @@ if(!empty($_POST)) {
     if(empty($errors)) {
         header('Location: success.php');
     }
+    $query = 'INSERT INTO friend (firstname, lastname) VALUES (:firstname, :lastname)';
+    $statement = $pdo->prepare($query);
+
+    $statement->bindValue(':firstname', $firstname, \PDO::PARAM_STR);
+    $statement->bindValue(':lastname', $lastname, \PDO::PARAM_STR);
+    $statement->execute();
 }
 
 $query = "SELECT * FROM friend";
 $statement = $pdo->query($query);
 $friend = $statement->fetchAll();
 
-$query = 'INSERT INTO friend (firstname, lastname) VALUES (:firstname, :lastname)';
-$statement = $pdo->prepare($query);
+(PDO::FETCH_ASSOC);
+$friendsArray = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+foreach($friendsArray as $friend) {
+    echo $friend['firstname'] . ' ' . $friend['lastname'];
+}
 
 ?>
 
